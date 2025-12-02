@@ -2,6 +2,12 @@ bin
 include
 lib
 .Python
+#dossier test
 tests/
-.envrc
+
+# env. virtual
+venv/
+.venv/
+.envrc/
+
 __pycache__

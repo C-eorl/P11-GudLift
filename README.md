@@ -1,6 +1,7 @@
 
 ---
 # gudlift-registration
+![logo GudLift](https://user.oc-static.com/upload/2020/09/22/16007798203635_P9.png)
 
 [[FR]](#français) - [[EN]](#english)
 ---
