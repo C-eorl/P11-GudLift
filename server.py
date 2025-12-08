@@ -52,8 +52,8 @@ def book(competition,club):
 @app.route('/purchasePlaces',methods=['POST'])
 def purchase_places():
 
-    competition = [c for c in competitions if c['name'] == request.form['competition']][0]
-    club = [c for c in clubs if c['name'] == request.form['club']][0]
+    competition = next(c for c in competitions if c['name'] == request.form['competition'])
+    club = next(c for c in clubs if c['name'] == request.form['club'])
 
     places_raw = request.form['places']
 
@@ -61,25 +61,25 @@ def purchase_places():
         placesRequired = int(places_raw)
     except ValueError:
         flash('Veuillez rentrer un nombre')
-        return redirect(url_for('purchase_places'))
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired <= 0:
         flash('Veuillez rentrer un nombre de place positif')
-        return redirect(url_for('purchase_places'))
+        return render_template('welcome.html', club=club, competitions=competitions)
     if placesRequired > 12:
         flash('Vous ne pouvez pas réserver plus de 12 places')
-        return redirect(url_for('purchase_places'))
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired > int(club['points']):
         flash("Vous n'avez pas assez de points")
-        return redirect(url_for('purchase_places'))
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     if placesRequired > int(competition['numberOfPlaces']):
         flash("Il n'a pas assez de place")
-        return redirect(url_for('purchase_places'))
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
-    flash('Great-booking complete!')
+    flash('Réservation réussie')
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
