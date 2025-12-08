@@ -7,12 +7,18 @@ def loadClubs():
          listOfClubs = json.load(c)['clubs']
          return listOfClubs
 
+def save_clubs(clubs):
+    with open('clubs.json', 'w') as c:
+        json.dump({'clubs' : clubs}, c, indent=4)
 
 def loadCompetitions():
     with open('competitions.json') as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
+def save_competitions(competitions):
+    with open('clubs.json', 'w') as c:
+        json.dump({'competitions' : competitions}, c, indent=4)
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -56,7 +62,7 @@ def purchase_places():
     club = next(c for c in clubs if c['name'] == request.form['club'])
 
     places_raw = request.form['places']
-
+    # validation
     try:
         placesRequired = int(places_raw)
     except ValueError:
@@ -79,6 +85,10 @@ def purchase_places():
         return render_template('welcome.html', club=club, competitions=competitions)
 
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    club['points'] = str(int(club['points'])-placesRequired)
+
+    save_clubs(clubs)
+
     flash('Réservation réussie')
     return render_template('welcome.html', club=club, competitions=competitions)
 
