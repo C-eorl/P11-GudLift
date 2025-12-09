@@ -3,9 +3,12 @@ include
 lib
 .Python
 
-#dossier test
+# dossier test
 tests/
 locustfile.py
+
+# utils json
+utils.py
 
 # env. virtual
 venv/
