@@ -2,8 +2,10 @@ bin
 include
 lib
 .Python
+
 #dossier test
 tests/
+locustfile.py
 
 # env. virtual
 venv/
