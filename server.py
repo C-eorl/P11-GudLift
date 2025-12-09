@@ -11,7 +11,7 @@ def save_clubs(clubs):
     with open('clubs.json', 'w') as c:
         json.dump({'clubs' : clubs}, c, indent=4)
 
-def loadCompetitions():
+def load_competitions():
     with open('competitions.json') as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
@@ -23,7 +23,7 @@ def save_competitions(competitions):
 app = Flask(__name__)
 app.secret_key = 'something_special'
 
-competitions = loadCompetitions()
+competitions = load_competitions()
 clubs = loadClubs()
 
 @app.route('/')
