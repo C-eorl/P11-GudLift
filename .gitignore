@@ -3,7 +3,8 @@ include
 lib
 .Python
 
-# dossier test
+# dossier test & report
+reports/
 tests/
 locustfile.py
 
