@@ -112,7 +112,7 @@ def purchase_places():
     save_clubs(clubs)
 
     flash('Réservation réussie')
-    return render_template('welcome.html', club=club, competitions=competitions)
+    return render_template('welcome.html', club=matching_club, competitions=competitions)
 
 @app.route('/points')
 def display_points():
