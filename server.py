@@ -3,20 +3,24 @@ from flask import Flask,render_template,request,redirect,flash,url_for
 
 
 def loadClubs():
+    """Load clubs from json file"""
     with open('clubs.json') as c:
          listOfClubs = json.load(c)['clubs']
          return listOfClubs
 
 def save_clubs(clubs):
+    """Save clubs to json file"""
     with open('clubs.json', 'w') as c:
         json.dump({'clubs' : clubs}, c, indent=4)
 
 def load_competitions():
+    """Load competitions from json file"""
     with open('competitions.json') as comps:
          listOfCompetitions = json.load(comps)['competitions']
          return listOfCompetitions
 
 def save_competitions(competitions):
+    """Save competitions to json file"""
     with open('competitions.json', 'w') as c:
         json.dump({'competitions' : competitions}, c, indent=4)
 
@@ -28,10 +32,12 @@ clubs = loadClubs()
 
 @app.route('/')
 def index():
+    """View homepage"""
     return render_template('index.html')
 
 @app.route('/showSummary',methods=['POST'])
 def show_summary():
+    """View summary page"""
     email = request.form['email']
     matching_clubs = [club for club in clubs if club['email'] == email]
 
@@ -46,6 +52,7 @@ def show_summary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
+    """View book page"""
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     if foundClub and foundCompetition:
@@ -57,7 +64,7 @@ def book(competition,club):
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchase_places():
-
+    """View purchase places page"""
     competition = next(c for c in competitions if c['name'] == request.form['competition'])
     club = next(c for c in clubs if c['name'] == request.form['club'])
 
@@ -95,8 +102,10 @@ def purchase_places():
 
 @app.route('/points')
 def display_points():
+    """View points page"""
     return render_template('points.html', clubs=clubs)
 
 @app.route('/logout')
 def logout():
+    """View logout page"""
     return redirect(url_for('index'))
