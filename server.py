@@ -13,6 +13,13 @@ def save_clubs(clubs):
     with open('clubs.json', 'w') as c:
         json.dump({'clubs' : clubs}, c, indent=4)
 
+def find_club(value: str):
+    """Find club by name"""
+    for club in clubs:
+        if value in club.values():
+            return club
+    return None
+
 def load_competitions():
     """Load competitions from json file"""
     with open('competitions.json') as comps:
@@ -23,6 +30,13 @@ def save_competitions(competitions):
     """Save competitions to json file"""
     with open('competitions.json', 'w') as c:
         json.dump({'competitions' : competitions}, c, indent=4)
+
+def find_competition(value: str):
+    """Find competition by name"""
+    for competition in competitions:
+        if value in competition.values():
+            return competition
+    return None
 
 app = Flask(__name__)
 app.secret_key = 'something_special'
@@ -39,34 +53,34 @@ def index():
 def show_summary():
     """View summary page"""
     email = request.form['email']
-    matching_clubs = [club for club in clubs if club['email'] == email]
+    matching_club = find_club(email)
 
-    if not matching_clubs:
+    if not matching_club:
         flash('Aucun compte lié à cette adresse mail')
         return redirect(url_for('index'))
 
-    club = matching_clubs[0]
-    flash(f'Vous êtes connecté au club {club["name"]}')
-    return render_template('welcome.html',club=club, competitions=competitions)
+    flash(f'Vous êtes connecté au club {matching_club["name"]}')
+    return render_template('welcome.html',club=matching_club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
-def book(competition,club):
+def book(competition, club):
     """View book page"""
-    foundClub = [c for c in clubs if c['name'] == club][0]
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
+    foundClub = find_club(club)
+    foundCompetition = find_competition(competition)
+
+    if not foundClub and not foundCompetition:
         return render_template('booking.html',club=foundClub,competition=foundCompetition)
-    else:
-        flash("Something went wrong-please try again")
-        return render_template('welcome.html', club=club, competitions=competitions)
+
+    flash("Something went wrong-please try again")
+    return render_template('welcome.html', club=club, competitions=competitions)
 
 
 @app.route('/purchasePlaces',methods=['POST'])
 def purchase_places():
     """View purchase places page"""
-    competition = next(c for c in competitions if c['name'] == request.form['competition'])
-    club = next(c for c in clubs if c['name'] == request.form['club'])
+    matching_competition = find_competition(request.form['competition'])
+    matching_club = find_club(request.form['club'])
 
     places_raw = request.form['places']
     # validation
@@ -74,25 +88,25 @@ def purchase_places():
         placesRequired = int(places_raw)
     except ValueError:
         flash('Veuillez rentrer un nombre')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=matching_club, competitions=competitions)
 
     if placesRequired <= 0:
         flash('Veuillez rentrer un nombre de place positif')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=matching_club, competitions=competitions)
     if placesRequired > 12:
         flash('Vous ne pouvez pas réserver plus de 12 places')
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=matching_club, competitions=competitions)
 
-    if placesRequired > int(club['points']):
+    if placesRequired > int(matching_club['points']):
         flash("Vous n'avez pas assez de points")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=matching_club, competitions=competitions)
 
-    if placesRequired > int(competition['numberOfPlaces']):
+    if placesRequired > int(matching_competition['numberOfPlaces']):
         flash("Il n'a pas assez de place")
-        return render_template('welcome.html', club=club, competitions=competitions)
+        return render_template('welcome.html', club=matching_club, competitions=competitions)
 
-    competition['numberOfPlaces'] = str(int(competition['numberOfPlaces'])-placesRequired)
-    club['points'] = str(int(club['points'])-placesRequired)
+    matching_competition['numberOfPlaces'] = str(int(matching_competition['numberOfPlaces'])-placesRequired)
+    matching_club['points'] = str(int(matching_club['points'])-placesRequired)
 
     save_competitions(competitions)
     save_clubs(clubs)
