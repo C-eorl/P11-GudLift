@@ -7,6 +7,8 @@ lib
 # utils json
 utils.py
 
+.coverage
+
 # env. virtual
 venv/
 .venv/
