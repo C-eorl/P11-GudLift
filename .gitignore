@@ -3,11 +3,6 @@ include
 lib
 .Python
 
-# dossier test & report
-reports/
-tests/
-locustfile.py
-pytest.ini
 
 # utils json
 utils.py
