@@ -7,6 +7,7 @@ lib
 reports/
 tests/
 locustfile.py
+pytest.ini
 
 # utils json
 utils.py
