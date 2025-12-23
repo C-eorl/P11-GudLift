@@ -5,7 +5,7 @@ def test_find_competition_found(monkeypatch, setup_test_data):
 
     assert competition == {
             "name": "Spring Festival",
-            "date": "2020-03-27 10:00:00",
+            "date": "2026-03-27 10:00:00",
             "numberOfPlaces": "25"
         }
 
