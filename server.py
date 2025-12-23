@@ -95,11 +95,11 @@ def book(competition, club):
         flash("Impossible de réserver des places pour une compétition passée")
         return render_template('welcome.html', club=foundClub, competitions=competitions)
 
-    if foundClub and foundCompetition:
-        return render_template('booking.html', club=foundClub, competition=foundCompetition)
+    if not foundClub and not foundCompetition:
+        return render_template('welcome.html', club=club, competitions=competitions)
 
     flash("Something went wrong-please try again")
-    return render_template('welcome.html', club=club, competitions=competitions)
+    return render_template('booking.html', club=foundClub, competition=foundCompetition)
 
 
 @app.route('/purchasePlaces', methods=['POST'])
