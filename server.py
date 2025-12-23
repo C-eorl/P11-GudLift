@@ -1,56 +1,73 @@
 from datetime import datetime
 import json
-from flask import Flask,render_template,request,redirect,flash,url_for
+from flask import Flask, render_template, request, redirect, flash, url_for
+
+##########################################
+#             Flask app                  #
+##########################################
+app = Flask(__name__)
+app.secret_key = 'something_special'
 
 
+##########################################
+#             Data & utils               #
+##########################################
 def loadClubs():
     """Load clubs from json file"""
     with open('clubs.json') as c:
-         listOfClubs = json.load(c)['clubs']
-         return listOfClubs
+        listOfClubs = json.load(c)['clubs']
+        return listOfClubs
+
 
 def save_clubs(clubs):
     """Save clubs to json file"""
     with open('clubs.json', 'w') as c:
-        json.dump({'clubs' : clubs}, c, indent=4)
+        json.dump({'clubs': clubs}, c, indent=4)
+
 
 def find_club(value: str):
-    """Find club by name"""
+    """Find club by value club"""
     for club in clubs:
         if value in club.values():
             return club
     return None
 
+
 def load_competitions():
     """Load competitions from json file"""
     with open('competitions.json') as comps:
-         listOfCompetitions = json.load(comps)['competitions']
-         return listOfCompetitions
+        listOfCompetitions = json.load(comps)['competitions']
+        return listOfCompetitions
+
 
 def save_competitions(competitions):
     """Save competitions to json file"""
     with open('competitions.json', 'w') as c:
-        json.dump({'competitions' : competitions}, c, indent=4)
+        json.dump({'competitions': competitions}, c, indent=4)
+
 
 def find_competition(value: str):
-    """Find competition by name"""
+    """Find competition by value competition"""
     for competition in competitions:
         if value in competition.values():
             return competition
     return None
 
-app = Flask(__name__)
-app.secret_key = 'something_special'
 
 competitions = load_competitions()
 clubs = loadClubs()
 
+
+##########################################
+#                Route                   #
+##########################################
 @app.route('/')
 def index():
     """View homepage"""
     return render_template('index.html')
 
-@app.route('/showSummary',methods=['POST'])
+
+@app.route('/showSummary', methods=['POST'])
 def show_summary():
     """View summary page"""
     email = request.form['email']
@@ -61,14 +78,16 @@ def show_summary():
         return redirect(url_for('index'))
 
     flash(f'Vous êtes connecté au club {matching_club["name"]}')
-    return render_template('welcome.html',club=matching_club, competitions=competitions)
+    return render_template('welcome.html', club=matching_club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     """View book page"""
-    foundClub = find_club(club)
-    foundCompetition = find_competition(competition)
+    name_club = club
+    foundClub = find_club(name_club)
+    name_competition = competition
+    foundCompetition = find_competition(name_competition)
 
     date_now = datetime.now()
     date_competition = datetime.strptime(foundCompetition["date"], "%Y-%m-%d %H:%M:%S")
@@ -77,18 +96,19 @@ def book(competition, club):
         return render_template('welcome.html', club=foundClub, competitions=competitions)
 
     if foundClub and foundCompetition:
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
-
+        return render_template('booking.html', club=foundClub, competition=foundCompetition)
 
     flash("Something went wrong-please try again")
     return render_template('welcome.html', club=club, competitions=competitions)
 
 
-@app.route('/purchasePlaces',methods=['POST'])
+@app.route('/purchasePlaces', methods=['POST'])
 def purchase_places():
     """View purchase places page"""
-    matching_competition = find_competition(request.form['competition'])
-    matching_club = find_club(request.form['club'])
+    name_competition = request.form['competition']
+    matching_competition = find_competition(name_competition)
+    name_club = request.form['club']
+    matching_club = find_club(name_club)
 
     places_raw = request.form['places']
     # validation
@@ -113,8 +133,8 @@ def purchase_places():
         flash("Il n'a pas assez de place")
         return render_template('welcome.html', club=matching_club, competitions=competitions)
 
-    matching_competition['numberOfPlaces'] = str(int(matching_competition['numberOfPlaces'])-placesRequired)
-    matching_club['points'] = str(int(matching_club['points'])-placesRequired)
+    matching_competition['numberOfPlaces'] = str(int(matching_competition['numberOfPlaces']) - placesRequired)
+    matching_club['points'] = str(int(matching_club['points']) - placesRequired)
 
     save_competitions(competitions)
     save_clubs(clubs)
@@ -122,10 +142,12 @@ def purchase_places():
     flash('Réservation réussie')
     return render_template('welcome.html', club=matching_club, competitions=competitions)
 
+
 @app.route('/points')
 def display_points():
     """View points page"""
     return render_template('points.html', clubs=clubs)
+
 
 @app.route('/logout')
 def logout():
