@@ -29,13 +29,42 @@ Avant de commencer, assurez-vous que cela est installé globalement.
 
 
 3. **Installation**
+    - lien du repo github pour clonage: ```https://github.com/C-eorl/P11-GudLift.git```
+    - Après le clonage, passez dans le répertoire ```cd P11-GudLift``` et tapez <code>python -m venv .venv</code>. Cela permettra de configurer un environnement Python virtuel dans ce répertoire.
 
-    - Après le clonage, passez dans le répertoire et tapez <code>virtualenv .</code>. Cela permettra de configurer un environnement Python virtuel dans ce répertoire.
-
-    - Ensuite, tapez <code>source bin/activate</code>. Vous devriez voir que votre invite de commande a changé pour le nom du dossier. Cela signifie que vous pouvez installer des paquets ici sans affecter les fichiers extérieurs. Pour désactiver, tapez <code>deactivate</code>
+    - Ensuite, tapez <code>source .venv/bin/activate</code>. Vous devriez voir que votre invite de commande a changé pour le nom du dossier. Cela signifie que vous pouvez installer des paquets ici sans affecter les fichiers extérieurs. Pour désactiver, tapez <code>deactivate</code>
 
     - Plutôt que de rechercher les paquets dont vous avez besoin, vous pouvez les installer en une seule étape. Tapez <code>pip install -r requirements.txt</code>. Cela installera tous les paquets répertoriés dans le fichier correspondant. Si vous installez un paquet, assurez-vous d'en informer les autres en mettant à jour le fichier
 
+
+4. **Mise en route serveur**
+    
+    Démarrer le serveur : 
+   ```bash
+   export FLASK_APP=server.py 
+   flask run
+   ```
+   
+    Acceder au serveur a l'aide ce cette adresse : http://127.0.0.1:5000
+
+
+5. **Configuration actuelle**
+
+L'application fonctionne à l'aide de fichiers JSON. Cela permet d'éviter d'avoir recours à une base de données tant que nous n'en avons pas réellement besoin. Les principaux fichiers sont les suivants :
+
+- competitions.json - liste des compétitions
+- clubs.json - liste des clubs avec les informations pertinentes. 
+
+Vous pouvez consulter cette liste pour voir quelles adresses e-mail l'application accepte pour la connexion.
+
+7. **Tests**
+
+Vous êtes libre d'utiliser le cadre de test de votre choix, l'essentiel étant que vous puissiez montrer les tests que vous utilisez.
+
+Nous aimons également montrer l'efficacité de nos tests, c'est pourquoi nous vous recommandons d'ajouter à votre projet un module appelé « coverage ».
+
+
+    
 ---
 
 ---
@@ -63,10 +92,10 @@ Before you begin, please ensure you have this installed globally.
 
 
 3. **Installation**
+    - GitHub repo link for cloning: ```https://github.com/C-eorl/P11-GudLift.git```
+    - After cloning, change into the directory and type <code>python -m venv .venv</code>. This will then set up a a virtual python environment within that directory.
 
-    - After cloning, change into the directory and type <code>virtualenv .</code>. This will then set up a a virtual python environment within that directory.
-
-    - Next, type <code>source bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
+    - Next, type <code>source .venv/bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
 
     - Rather than hunting around for the packages you need, you can install in one step. Type <code>pip install -r requirements.txt</code>. This will install all the packages listed in the respective file. If you install a package, make sure others know by updating the requirements.txt file. An easy way to do this is <code>pip freeze > requirements.txt</code>
 
@@ -75,7 +104,19 @@ Before you begin, please ensure you have this installed globally.
     - You should now be ready to test the application. In the directory, type either <code>flask run</code> or <code>python -m flask run</code>. The app should respond with an address you should be able to go to using your browser.
 
 
-4. **Current Setup**
+4. **Mise en route serveur**
+    
+    Démarrer le serveur : 
+   ```bash
+   export FLASK_APP=server.py 
+   flask run
+   ```
+   
+    Acceder au serveur a l'aide ce cette adresse : http://127.0.0.1:5000
+
+
+
+5. **Current Setup**
 
     The app is powered by [JSON files](https://www.tutorialspoint.com/json/json_quick_guide.htm). This is to get around having a DB until we actually need one. The main ones are:
      
@@ -83,7 +124,7 @@ Before you begin, please ensure you have this installed globally.
     * clubs.json - list of clubs with relevant information. You can look here to see what email addresses the app will accept for login.
 
 
-5. **Testing**
+6. **Testing**
 
     You are free to use whatever testing framework you like-the main thing is that you can show what tests you are using.
 
@@ -91,4 +132,4 @@ Before you begin, please ensure you have this installed globally.
     [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) you should add to your project.
 
 ---
-_Projet réalisée dans le contexte de la formation Developpeur Python - OpenClassRoom_
+_Projet réalisé dans le contexte de la formation Developpeur Python - OpenClassRoom_
