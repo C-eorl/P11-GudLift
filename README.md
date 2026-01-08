@@ -93,7 +93,7 @@ Before you begin, please ensure you have this installed globally.
 
 3. **Installation**
     - GitHub repo link for cloning: ```https://github.com/C-eorl/P11-GudLift.git```
-    - After cloning, change into the directory and type <code>python -m venv .venv</code>. This will then set up a a virtual python environment within that directory.
+    - After cloning, change into the directory ```cd P11-GudLift``` and type <code>python -m venv .venv</code>. This will then set up a a virtual python environment within that directory.
 
     - Next, type <code>source .venv/bin/activate</code>. You should see that your command prompt has changed to the name of the folder. This means that you can install packages in here without affecting affecting files outside. To deactivate, type <code>deactivate</code>
 
