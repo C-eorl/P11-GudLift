@@ -4,9 +4,6 @@ lib
 .Python
 
 
-# utils json
-utils.py
-
 .coverage
 
 # env. virtual
