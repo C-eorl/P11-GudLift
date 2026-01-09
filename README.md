@@ -24,7 +24,7 @@ Ce projet utilise les technologies suivantes :
   Flask nous permet d'ajouter uniquement ce dont nous avons besoin.
 * [Environnement virtuel](https://virtualenv.pypa.io/en/stable/installation.html)
 
-  Cela vous permet d'installer les bons paquets sans interférer avec Python sur votre machine.
+Cela vous permet d'installer les bons paquets sans interférer avec Python sur votre machine.
 Avant de commencer, assurez-vous que cela est installé globalement. 
 
 
